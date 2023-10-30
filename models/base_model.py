@@ -13,7 +13,7 @@ class BaseModel:
     BaseModel class
     defines common attributes and methods for other classes.
     """
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """
         Initialize a new BaseModel instance.
         Attributes:
@@ -21,6 +21,12 @@ class BaseModel:
         - created_at (datetime): The datetime the instance was created.
         - updated_at (datetime): The datetime the instance was last updated.
         """
+        timeF = %Y-%m-%dT%H:%M:%S.%f
+        if len(kwargs) != 0:
+            for k, v in kwargs.items():
+                if key == "created_at" or key == "updated_at":
+                    self.__dict__[k] = datetime.datetime.strptime(v, timeF)
+        else:
         self.id = str(uuid.uuid4())
         self.created_at = datetime.datetime.now()
         self.updated_at = self.created_at
