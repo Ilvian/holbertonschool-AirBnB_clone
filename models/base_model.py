@@ -24,14 +24,14 @@ class BaseModel:
         timeF = "%Y-%m-%dT%H:%M:%S.%f"
         if len(kwargs) != 0:
             for k, v in kwargs.items():
-                if k == "created_at" or key == "updated_at":
+                if k == "created_at" or k == "updated_at":
                     self.__dict__[k] = datetime.datetime.strptime(v, timeF)
                 else:
                     self.__dict__[k] = v
         else:
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.now()
-        self.updated_at = self.created_at
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.datetime.now()
+            self.updated_at = self.created_at
 
     def save(self):
         """
