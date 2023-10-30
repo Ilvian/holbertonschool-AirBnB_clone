@@ -21,11 +21,13 @@ class BaseModel:
         - created_at (datetime): The datetime the instance was created.
         - updated_at (datetime): The datetime the instance was last updated.
         """
-        timeF = %Y-%m-%dT%H:%M:%S.%f
+        timeF = "%Y-%m-%dT%H:%M:%S.%f"
         if len(kwargs) != 0:
             for k, v in kwargs.items():
-                if key == "created_at" or key == "updated_at":
+                if k == "created_at" or key == "updated_at":
                     self.__dict__[k] = datetime.datetime.strptime(v, timeF)
+                else:
+                    self.__dict__[k] = v
         else:
         self.id = str(uuid.uuid4())
         self.created_at = datetime.datetime.now()
