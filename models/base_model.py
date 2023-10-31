@@ -27,13 +27,45 @@ class BaseModel:
             self.updated_at = datetime.today()
             models.storage.new(self)
 
+    def all(self):
+        """
+        Returns the dictionary of objects.
+        """
+        return self.__objects
+
+    def new(self, obj):
+        """
+        Sets an object in the dictionary of objects.
+        """
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        self.__objects[key] = obj
+
     def save(self):
         """
         Update the "updated_at" attribute with the current
         timestamp and save the object.
         """
-        self.updated_at = datetime.today()
-        models.storage.save()
+        data = {}
+        for key, value in self.__objects.items():
+            data[key] = value.to_dict()
+    
+        with open(self.__file_path, 'w', encoding='utf-8') as file:
+            json.dump(data, file)
+
+    def reload(self):
+        """
+        Deserializes the JSON file to __objects if it exists.
+        """
+        try:
+            with open(self.__file_path, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+            for key, value in data.items():
+                class_name, instance_id = key.split('.')
+                obj = models.classes[class_name](**value)
+                self.__objects[key] = obj
+        except FileNotFoundError:
+            pass
+
 
     def to_dict(self):
         """
