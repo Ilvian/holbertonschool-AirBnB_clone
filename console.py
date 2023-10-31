@@ -42,8 +42,4 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == '__main__':
-    """
-    Check if the code is being executed directly (not imported).
-    Create an instance of the HBNBCommand class and start the command loop.
-    """
     HBNBCommand().cmdloop()
