@@ -1,178 +1,130 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
-This is the console.py script for the HBNB command interpreter.
-It provides a simple command-line interface for interacting with the program.
+Console module for your project.
 """
 
 
 import cmd
+from models.base_model import BaseModel
+import models
 
 
 class HBNBCommand(cmd.Cmd):
-    """
-    Custom command interpreter class.
-    """
     prompt = "(hbnb) "
+
     classes = {
-            "BaseModel",
-            "User",
-            "State",
-            "City",
-            "Place",
-            "Amenity",
-            "Review"
-            }
+            "BaseModel": BaseModel
+    }
 
     def emptyline(self):
-        """
-        Do nothing when an empty line is entered.
-        """
-        return False
+        pass
 
     def do_quit(self, arg):
-        """
-        Exit the program.
-        """
+        """Quit the console"""
         return True
-
-    def help_quit(self):
-        """
-        Provide help for the 'quit' command.
-        """
-        print("Quit command to exit the program")
 
     def do_EOF(self, arg):
-        """
-        Exit the program when Ctrl+D (EOF) is entered.
-        """
+        """Exit on EOF (Ctrl+D)"""
         return True
-
-    def help_EOF(self):
-        """
-        Provide help for the 'EOF' command.
-        """
-        print("EOF command to exit the program.")
 
     def do_create(self, arg):
         """
-        Creates a new instance of BaseModel, saves it to the JSON file, and prints the ID.
-
-        Args:
-            arg (str): The class name for which to create an instance (e.g., "BaseModel").
-
-        Example usage:
-        - create BaseModel
-        - create
-        - create MyModel
+        Create a new instance of a class, save it, and print the id.
         """
         if not arg:
             print("** class name missing **")
         else:
-            try:
-                cls = eval(arg)
-                inst = cls()
-                inst.save()
-                print(inst.id)
-            except NameError:
+            class_name = arg.split()[0]
+            if class_name in self.classes:
+                new_instance = self.classes[class_name]()
+                new_instance.save()
+                print(new_instance.id)
+            else:
                 print("** class doesn't exist **")
+
 
     def do_show(self, arg):
         """
-        Show the string representation of an instance.
+        Print the string representation of an instance based on class name and id.
         """
         args = arg.split()
-        if len(args) != 2:
-            print("** missing class name or instance id **")
-            return
-
-        class_name, instance_id = args[0], args[1]
-        try:
-            cls = eval(class_name)
-            instance = storage.get(cls, instance_id)
-            if instance:
-                print(instance)
-            else:
-                print("** no instance found **")
-        except NameError:
+        if not args:
+            print("** class name missing **")
+        elif args[0] not in self.classes:
             print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
+        else:
+            class_name = args[0]
+            instance_id = args[1]
+            if class_name in self.classes:
+                instances = models.storage.all()
+                instance_key = "{}.{}".format(class_name, instance_id)
+                instance = instances.get(instance_key)
+                if instance:
+                    print(instance)
+                else:
+                    print("** no instance found **")
 
     def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id.
-
-        Args:
-            arg (str): Class name and instance ID in the format "class_name instance_id."
-
-        Example usage:
-        - destroy BaseModel 1234-1234-1234
-        """
+        """Delete an instance based on class name and id (save changes to the JSON file)."""
         args = arg.split()
-        if len(args) != 2:
-            print("** missing class name or instance id **")
-            return
-
-        class_name, instance_id = args[0], args[1]
-        try:
-            cls = eval(class_name)
-            instance = storage.get(cls, instance_id)
-            if instance:
-                storage.delete(instance)
-                storage.save()
-            else:
-                print("** no instance found **")
-        except NameError:
+        if not args:
+            print("** class name missing **")
+        elif args[0] not in self.classes:
             print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
+        else:
+            class_name = args[0]
+            instance_id = args[1]
+            if class_name in self.classes:
+                instances = self.classes[class_name].all()
+                if instance_id in instances:
+                    del instances[instance_id]
+                    self.classes[class_name].save()
+                else:
+                    print("** no instance found **")
 
     def do_all(self, arg):
-        """Prints all string representations of instances based on the class name.
-
-        Args:
-            arg (str): The class name (optional).
-
-        Example usage:
-        - all BaseModel
-        - all
-        """
-        if arg:
-            try:
-                cls = eval(arg)
-                instances = storage.all(cls).values()
-            except NameError:
-                print("** class doesn't exist **")
-                return
-        else:
-            instances = storage.all().values()
-
-        print([str(instance) for instance in instances])
+        """Print all string representations of instances, based on class name or not."""
+        args = arg.split()
+        if not args:
+            print([str(instance) for cls in self.classes.values() for instance in cls.all().values()])
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
 
     def do_update(self, arg):
-        """Updates an instance based on the class name and id by adding or updating an attribute.
-
-        Args:
-            arg (str): Class name, instance ID, attribute name, and attribute value in the format "class_name instance_id attribute_name 'attribute_value'."
-
-        Example usage:
-        - update BaseModel 1234-1234-1234 email 'aibnb@mail.com'
-        """
+        """Update an instance based on class name, id, attribute name, and value (save changes to the JSON file)."""
         args = arg.split()
-        if len(args) < 3:
-            print("** missing class name, instance id, attribute name, or value **")
-            return
-
-        class_name, instance_id, attribute_name = args[0], args[1], args[2]
-        try:
-            cls = eval(class_name)
-            instance = storage.get(cls, instance_id)
-            if instance:
-                if len(args) >= 4:
-                    setattr(instance, attribute_name, args[3][1:-1])
-                    instance.save()
-                else:
-                    print("** value missing **")
-            else:
-                print("** no instance found **")
-        except NameError:
+        if not args:
+            print("** class name missing **")
+        elif args[0] not in self.classes:
             print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
+        elif len(args) < 3:
+            print("** attribute name missing **")
+        elif len(args) < 4:
+            print("** value missing **")
+        else:
+            class_name = args[0]
+            instance_id = args[1]
+            attribute_name = args[2]
+            attribute_value = args[3]
+            if class_name in self.classes:
+                instance = self.classes[class_name].get(instance_id)
+                if instance:
+                    if hasattr(instance, attribute_name):
+                        attr_type = type(getattr(instance, attribute_name))
+                        setattr(instance, attribute_name, attr_type(attribute_value))
+                        instance.save()
+                    else:
+                        print("** attribute doesn't exist **")
+                else:
+                    print("** no instance found **")
 
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
+
