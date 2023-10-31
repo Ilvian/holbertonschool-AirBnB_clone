@@ -24,10 +24,10 @@ class FileStorage:
 
     def reload(self):
         try:
-            with open(FileStorage.__file_path, "r") as jsonFile:
+            with open(FileStorage.__file_path) as jsonFile:
                 objdict = json.load(jsonFile)
-                for obj in objdict:
-                    clsName = obj[__class__]
-                    self.new(eval(clsName)(**obj))
+                for obj in objdict.values():
+                    cls_name = obj["__class__"]
+                    self.new(eval(cls_name)(**obj))
         except FileNotFoundError:
             return
