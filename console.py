@@ -5,7 +5,7 @@ import cmd
 
 
 class HBNBCommand(cmd.Cmd):
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
 
     def emptyline(self):
         pass
@@ -15,6 +15,12 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         return True
+
+    def help_quit(self):
+        print("Quit command to exit the program")
+
+    def help_EOF(self):
+        print("EOF command to exit the program.")
 
 
 if __name__ == '__main__':
