@@ -16,8 +16,10 @@ class BaseModel:
         *args: Non-keyword arguments (not used in this implementation).
         **kwargs: Keyword arguments, typically used for object initialization.
 
-    If **kwargs is provided, it updates the object's attributes based on the keyword arguments.
-    If **kwargs is not provided, it initializes the object with default values and adds it to the storage system.
+    If **kwargs is provided, it updates the object's
+    attributes based on the keyword arguments.
+    If **kwargs is not provided, it initializes the object
+    with default values and adds it to the storage system.
     """
     def __init__(self, *args, **kwargs):
         tform = "%Y-%m-%dT%H:%M:%S.%f"
@@ -35,7 +37,8 @@ class BaseModel:
 
     def save(self):
         """
-        Update the "updated_at" attribute with the current timestamp and save the object.
+        Update the "updated_at" attribute with the current
+        timestamp and save the object.
         """
         self.updated_at = datetime.today()
         models.storage.save()
@@ -45,7 +48,8 @@ class BaseModel:
         Convert the object into a dictionary representation.
 
         Returns:
-            dict: A dictionary containing the object's attributes and class name.
+            dict: A dictionary containing the object's
+            attributes and class name.
         """
         rdict = self.__dict__.copy()
         rdict["created_at"] = self.created_at.isoformat()
@@ -58,7 +62,8 @@ class BaseModel:
         Return a string representation of the object.
 
         Returns:
-            str: A string containing the object's class name, ID, and attributes.
+            str: A string containing the object's class name,
+            ID, and attributes.
         """
         clname = self.__class__.__name__
         return "[{}] ({}) {}".format(clname, self.id, self.__dict__)
