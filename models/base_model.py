@@ -6,7 +6,7 @@ This module offers the base structure for other models in the project.
 
 import uuid
 import datetime
-import models
+from models.__init__ import storage
 
 
 class BaseModel:
@@ -30,6 +30,7 @@ class BaseModel:
                 else:
                     self.__dict__[k] = v
         else:
+            
             models.storage.new(self)
 
     def save(self):
@@ -37,7 +38,7 @@ class BaseModel:
         Update the updated_at attribute with the current datetime.
         """
         self.updated_at = datetime.datetime.now()
-        models.storage.save()
+        storage.save()
 
     def to_dict(self):
         """
