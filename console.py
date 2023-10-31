@@ -14,7 +14,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Do nothing when an empty line is entered.
         """
-        pass
+        return False
 
     def do_quit(self, arg):
         """
