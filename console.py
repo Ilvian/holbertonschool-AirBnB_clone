@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+This is the console.py script for the HBNB command interpreter.
+It provides a simple command-line interface for interacting with the program.
+"""
 
 
 import cmd
@@ -26,7 +30,6 @@ class HBNBCommand(cmd.Cmd):
         """
         Exit the program when Ctrl+D (EOF) is entered.
         """
-        print()
         return True
 
     def help_quit(self):
