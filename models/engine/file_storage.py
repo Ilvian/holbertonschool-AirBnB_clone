@@ -28,7 +28,6 @@ class FileStorage:
                 objdict = json.load(jsonFile)
                 for obj in objdict:
                     clsName = obj[__class__]
-                    self.__init__(**obj)
-                    FileStorage.__objects[self.__class__.__name__ + f".{self.id}"] = self.id
+                    self.new(eval(clsName)(**obj)
         except FileNotFoundError:
             return
