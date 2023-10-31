@@ -76,29 +76,25 @@ class HBNBCommand(cmd.Cmd):
             except NameError:
                 print("** class doesn't exist **")
 
-    def do_show(class_name, instance_id):
+    def do_show(self, arg):
         """
-        Prints the string representation of an instance based on the class name and id.
-        :param class_name: Name of the class
-        :param instance_id: ID of the instance
+        Show the string representation of an instance.
         """
-        if not class_name:
-            print("** class name missing **")
+        args = arg.split()
+        if len(args) != 2:
+            print("** missing class name or instance id **")
             return
 
-        if class_name not in classes:
+        class_name, instance_id = args[0], args[1]
+        try:
+            cls = eval(class_name)
+            instance = storage.get(cls, instance_id)
+            if instance:
+                print(instance)
+            else:
+                print("** no instance found **")
+        except NameError:
             print("** class doesn't exist **")
-            return
-
-        if not instance_id:
-            print("** instance id missing **")
-            return
-
-        instance = classes[class_name].get(instance_id)
-        if not instance:
-            print("** no instance found **")
-        else:
-            print(instance)
 
 
 if __name__ == '__main__':
