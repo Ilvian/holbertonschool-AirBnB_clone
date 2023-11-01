@@ -8,36 +8,48 @@ import cmd
 from models import storage
 from models.base_model import BaseModel
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def do_quit(self, arg):
-        """Quit command to exit the program"""
+        """
+        Quit command to exit the program
+        """
         return True
 
     def do_EOF(self, arg):
-        """EOF command to exit the program"""
+        """
+        EOF command to exit the program
+        """
         print()
         return True
 
     def emptyline(self):
-        """Do nothing on an empty line"""
+        """
+        Do nothing on an empty line
+        """
         pass
 
     def do_create(self, arg):
-        """Create a new instance of BaseModel and save it"""
+        """
+        Create a new instance of BaseModel and save it
+        """
         if not arg:
             print("** class name missing **")
             return
-        try:
-            new_instance = BaseModel()
-            new_instance.save()
-            print(new_instance.id)
-        except Exception:
+        args = arg.split()
+        if args[0] not in ["BaseModel"]:
             print("** class doesn't exist **")
+            return
+        new_instance = BaseModel()
+        new_instance.save()
+        print(new_instance.id)
 
     def do_show(self, arg):
-        """Print the string representation of an instance"""
+        """
+        Print the string representation of an instance
+        """
         if not arg:
             print("** class name missing **")
             return
@@ -55,7 +67,9 @@ class HBNBCommand(cmd.Cmd):
             print(storage.all()[key])
 
     def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id"""
+        """
+        Deletes an instance based on the class name and id
+        """
         if not arg:
             print("** class name missing **")
             return
@@ -74,7 +88,9 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
     def do_all(self, arg):
-        """Print all string representations of instances"""
+        """
+        Print all string representations of instances
+        """
         if not arg:
             print([str(val) for val in storage.all().values()])
             return
@@ -82,10 +98,13 @@ class HBNBCommand(cmd.Cmd):
         if args[0] not in ["BaseModel"]:
             print("** class doesn't exist **")
             return
-        print([str(val) for key, val in storage.all().items() if key.startswith(args[0])])
+        print([str(val) for key,
+            val in storage.all().items() if key.startswith(args[0])])
 
     def do_update(self, arg):
-        """Updates an instance based on the class name and id"""
+        """
+        Updates an instance based on the class name and id
+        """
         if not arg:
             print("** class name missing **")
             return
