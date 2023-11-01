@@ -11,6 +11,11 @@ from models.base_model import BaseModel
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
+    classes = {
+        "BaseModel": BaseModel,
+        "User": User
+    }
+
 
     def all(self):
         return FileStorage.__objects
@@ -26,13 +31,14 @@ class FileStorage:
         with open(FileStorage.__file_path, 'w') as file:
             json.dump(data, file)
 
-    def reload(self):
+     def reload(self):
         try:
             with open(FileStorage.__file_path, 'r') as file:
                 data = json.load(file)
             for key, value in data.items():
                 cls_name, obj_id = key.split('.')
-                obj = BaseModel(**value)
-                FileStorage.__objects[key] = obj
+                if cls_name in self.__class__.classes:
+                    obj = self.__class__.classes
+                    FileStorage.__objects[key] = obj
         except FileNotFoundError:
             pass
