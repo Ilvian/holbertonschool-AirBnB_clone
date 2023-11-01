@@ -6,6 +6,7 @@ This script defines a BaseModel class for managing and persisting data.
 
 import cmd
 from models import storage
+from models.base_model import BaseModel
 from models.user import User
 
 
@@ -135,7 +136,7 @@ class HBNBCommand(cmd.Cmd):
             if class_name not in self.classes:
                 print("** class doesn't exist **")
                 return
-            print([str(val) for key, val in storage.all().items() if key.startswith(class_name)]
+            print([str(val) for key, val in storage.all().items() if key.startswith(class_name)])
 
     def do_update(self, arg):
         """
