@@ -17,6 +17,11 @@ from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
+    '''
+    Console class to create a
+    console which will take differenct
+    commands and execute them
+    '''
     prompt = "(hbnb) "
     classes = {
         "BaseModel": BaseModel,
