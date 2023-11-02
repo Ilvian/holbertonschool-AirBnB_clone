@@ -1,12 +1,18 @@
 #!/usr/bin/python3
 """
-This script defines a BaseModel class for managing and persisting data.
+This script defines the FileStorage class responsible for
+managing and persisting data objects.
 """
 
 
 import json
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class FileStorage:
@@ -14,7 +20,12 @@ class FileStorage:
     __objects = {}
     classes = {
         "BaseModel": BaseModel,
-        "User": User
+        "User": User,
+        "State": State,
+        "City": City,
+        "Place": Place,
+        "Amenity": Amenity,
+        "Review": Review
     }
 
     def all(self):

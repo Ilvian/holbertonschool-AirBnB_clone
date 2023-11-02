@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-This script defines a BaseModel class for managing and persisting data.
+This script initializes a FileStorage instance and reloads data,
+making it available for managing and persisting data.
 """
 
 

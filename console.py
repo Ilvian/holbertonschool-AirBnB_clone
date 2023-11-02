@@ -1,20 +1,31 @@
 #!/usr/bin/python3
-"""
-This script defines a BaseModel class for managing and persisting data.
-"""
+'''
+Module to create a console to add interactivity to our
+project where admin users can update add delete
+'''
 
 
 import cmd
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     classes = {
         "BaseModel": BaseModel,
-        "User": User
+        "User": User,
+        "State": State,
+        "City": City,
+        "Place": Place,
+        "Amenity": Amenity,
+        "Review": Review
     }
 
     def do_quit(self, arg):
@@ -136,7 +147,12 @@ class HBNBCommand(cmd.Cmd):
             if class_name not in self.classes:
                 print("** class doesn't exist **")
                 return
-            print([str(val) for key, val in storage.all().items() if key.startswith(class_name)])
+            result = [
+                    str(val)
+                    for key, val in storage.all().items()
+                    if key.startswith(class_name)
+                    ]
+            print(result)
 
     def do_update(self, arg):
         """
