@@ -29,7 +29,8 @@ class TestFileStorage(unittest.TestCase):
 
     def test_objects(self):
         self.assertEqual(type(self.storage._FileStorage__objects), dict)
-        self.assertEqual(self.storage._FileStorage__objects, self.storage.all())
+        self.assertEqual(
+                self.storage._FileStorage__objects, self.storage.all())
 
     def test_new(self):
         user = User()
@@ -61,7 +62,8 @@ class TestFileStorage(unittest.TestCase):
     # Check if the user.id is in the keys and user object is in values
         self.assertTrue("User.{}".format(user.id) in user_objects)
         self.assertEqual(user_objects["User.{}".format(user.id)].id, user.id)
-        self.assertEqual(user_objects["User.{}".format(user.id)].email, user.email)
+        self.assertEqual(
+                user_objects["User.{}".format(user.id)].email, user.email)
     # Add more attribute comparisons as needed
 
     # You can check as many attributes as you need to validate
