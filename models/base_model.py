@@ -9,7 +9,13 @@ from datetime import datetime
 
 
 class BaseModel:
+    '''
+    BaseModel Class
+    '''
     def __init__(self, *args, **kwargs):
+        '''
+        Init function for BaseModel instances
+        '''
         from models import storage
         if kwargs:
             for key, value in kwargs.items():
@@ -25,11 +31,18 @@ class BaseModel:
             storage.new(self)
 
     def save(self):
+        '''
+        Function to update the 'updated_at' attribute
+        of the instance when updated
+        '''
         from models import storage
         self.updated_at = datetime.now()
         storage.save()
 
     def to_dict(self):
+        '''
+        Dictionary representation of the instance
+        '''
         data = self.__dict__.copy()
         data['__class__'] = self.__class__.__name__
         data['created_at'] = self.created_at.isoformat()
@@ -37,5 +50,8 @@ class BaseModel:
         return data
 
     def __str__(self):
+        '''
+        String representation of the instance
+        '''
         return "[{}] ({}) {}".format(
                 self.__class__.__name__, self.id, self.__dict__)
