@@ -1,13 +1,13 @@
 #!/usr/bin/python3
-"""Test for file storage"""
-
+"""
+Test for file storage
+"""
 
 import unittest
 import os
 from models.base_model import BaseModel
 from models.user import User
 from models.engine.file_storage import FileStorage
-from datetime import datetime
 
 
 class TestFileStorage(unittest.TestCase):
@@ -29,8 +29,7 @@ class TestFileStorage(unittest.TestCase):
 
     def test_objects(self):
         self.assertEqual(type(self.storage._FileStorage__objects), dict)
-        self.assertEqual(
-                self.storage._FileStorage__objects, self.storage.all())
+        self.assertEqual(self.storage._FileStorage__objects, self.storage.all())
 
     def test_new(self):
         user = User()
@@ -52,22 +51,9 @@ class TestFileStorage(unittest.TestCase):
     def test_all(self):
         user = User()
         self.storage.new(user)
-
-    # Filter the __objects dictionary to only include User instances
-        user_objects = {
-                key: obj for key, obj in self.storage.all().items()
-                if key.startswith("User.")
-                }
-
-    # Check if the user.id is in the keys and user object is in values
-        self.assertTrue("User.{}".format(user.id) in user_objects)
-        self.assertEqual(user_objects["User.{}".format(user.id)].id, user.id)
-        self.assertEqual(
-                user_objects["User.{}".format(user.id)].email, user.email)
-    # Add more attribute comparisons as needed
-
-    # You can check as many attributes as you need to validate
+        self.assertEqual(self.storage.all(), {"User.{}".format(user.id): user})
 
 
 if __name__ == '__main__':
     unittest.main()
+
