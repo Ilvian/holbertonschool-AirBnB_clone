@@ -1,6 +1,7 @@
 import unittest
 from models.base_model import BaseModel
 
+
 class TestBaseModel(unittest.TestCase):
     def test_init(self):
         model = BaseModel()
@@ -28,6 +29,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(model_str, str)
         self.assertTrue(model.__class__.__name__ in model_str)
         self.assertTrue(model.id in model_str)
+
 
 if __name__ == '__main__':
     unittest.main()
