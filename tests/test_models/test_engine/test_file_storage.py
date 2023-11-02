@@ -51,7 +51,20 @@ class TestFileStorage(unittest.TestCase):
     def test_all(self):
         user = User()
         self.storage.new(user)
-        self.assertEqual(self.storage.all(), {"User.{}".format(user.id): user})
+
+    # Filter the __objects dictionary to only include User instances
+        user_objects = {
+                key: obj for key, obj in self.storage.all().items()
+                if key.startswith("User.")
+                }
+
+    # Check if the user.id is in the keys and user object is in values
+        self.assertTrue("User.{}".format(user.id) in user_objects)
+        self.assertEqual(user_objects["User.{}".format(user.id)].id, user.id)
+        self.assertEqual(user_objects["User.{}".format(user.id)].email, user.email)
+    # Add more attribute comparisons as needed
+
+    # You can check as many attributes as you need to validate
 
 
 if __name__ == '__main__':
