@@ -17,7 +17,6 @@ class FileStorage:
         "User": User
     }
 
-
     def all(self):
         return FileStorage.__objects
 
