@@ -55,16 +55,16 @@ class FileStorage:
             json.dump(data, file)
 
     def reload(self):
-        '''
-        Deserializes the JSON file and loads objects into the storage.
-        '''
-        try:
-            with open(FileStorage.__file_path, 'r') as file:
-                data = json.load(file)
-            for key, value in data.items():
-                cls_name, obj_id = key.split('.')
-                if cls_name in self.__class__.classes:
-                    obj = self.__class__.classes[cls_name](**value)
-                    FileStorage.__objects[key] = obj
-        except FileNotFoundError:
-            pass
+    """
+    Deserialize the JSON file to populate objects in the storage dictionary.
+    """
+    try:
+        with open(self._FileStorage__file_path, 'r') as file:
+            data = json.load(file)
+        for key, value in data.items():
+            cls_name, obj_id = key.split('.')
+            if cls_name in self._FileStorage__classes:
+                obj = self._FileStorage__classes[cls_name](**value)
+                self._FileStorage__objects[key] = obj
+    except FileNotFoundError:
+        pass
