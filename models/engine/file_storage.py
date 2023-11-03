@@ -67,6 +67,7 @@ class FileStorage:
                 if cls_name in self.__class__.classes:
                     obj = self.__class__.classes[cls_name](**value)
                     FileStorage.__objects[key] = obj
+                return True
         except FileNotFoundError:
             pass
-            return True
+            return False
