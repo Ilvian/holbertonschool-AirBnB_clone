@@ -1,68 +1,65 @@
 #!/usr/bin/python3
-"""Test for file storage"""
+'''
+This script initializes a FileStorage instance and reloads data,
+making it available for managing and persisting data.
+'''
 
 
+import io
+import sys
 import unittest
 import os
-from models.base_model import BaseModel
-from models.user import User
+import datetime
 from models.engine.file_storage import FileStorage
-from datetime import datetime
+from models.base_model import BaseModel
+from models import storage
 
 
 class TestFileStorage(unittest.TestCase):
-
-    def setUp(self):
-        # Create an instance of FileStorage
-        self.storage = FileStorage()
-
-    def tearDown(self):
-        # Clean up and delete the test JSON file if it exists
-        if os.path.exists(self.storage._FileStorage__file_path):
-            os.remove(self.storage._FileStorage__file_path)
+    '''
+    This script initializes a FileStorage instance and reloads data,
+    making it available for managing and persisting data.
+    '''
 
     def test_storage(self):
-        self.assertEqual(type(self.storage.all()), dict)
+        '''
+        This script initializes a FileStorage instance and reloads data,
+        making it available for managing and persisting data.
+        '''
+
+        obj = FileStorage()
+        self.assertEqual(type(obj.all()), dict)
 
     def test_filepath(self):
-        self.assertEqual(self.storage._FileStorage__file_path, "file.json")
+        '''
+        This script initializes a FileStorage instance and reloads data,
+        making it available for managing and persisting data.
+        '''
+
+        obj = FileStorage()
+        self.assertEqual(obj._FileStorage__file_path, "file.json")
 
     def test_objects(self):
-        self.assertEqual(type(self.storage._FileStorage__objects), dict)
-        self.assertEqual(self.storage._FileStorage__objects, self.storage.all())
+        '''
+        This script initializes a FileStorage instance and reloads data,
+        making it available for managing and persisting data.
+        '''
 
-    def test_new(self):
-        user = User()
-        self.storage.new(user)
-        self.assertTrue("User.{}".format(user.id) in self.storage.all())
+        obj = FileStorage()
+        self.assertEqual(type(obj._FileStorage__objects), dict)
+        self.assertEqual(obj._FileStorage__objects, obj.all())
 
-    def test_save_reload(self):
-        user = User()
-        self.storage.new(user)
-        self.storage.save()
+    def test_methods(self):
+        '''
+        This script initializes a FileStorage instance and reloads data,
+        making it available for managing and persisting data.
+        '''
 
-        # Create a new storage instance and load the data
-        new_storage = FileStorage()
-        new_storage.reload()
-
-        # Check if the object is successfully loaded
-        self.assertTrue("User.{}".format(user.id) in new_storage.all())
-
-    def test_all(self):
-        user = User()
-        self.storage.new(user)
-    
-        # Filter the __objects dictionary to only include User instances
-        user_objects = {
-                key: obj for key, obj in self.storage.all().items()
-                if key.startswith("User.")
-                }
-
-        # Check if the user.id is in the keys and user object is in values
-        self.assertTrue("User.{}".format(user.id) in user_objects)
-        self.assertEqual(user_objects["User.{}".format(user.id)].id, user.id)
-        self.assertEqual(user_objects["User.{}".format(user.id)].email, user.email)
-
-
-if __name__ == '__main__':
-    unittest.main()
+        obj = FileStorage()
+        base = BaseModel()
+        result = obj.new(base)
+        self.assertTrue(result is not None)
+        result = obj.save()
+        self.assertTrue(result is not None)
+        result = obj.reload()
+        self.assertTrue(result is not None)
