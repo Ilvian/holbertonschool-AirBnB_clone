@@ -44,7 +44,7 @@ class BaseModel:
         '''
         Dictionary representation of the instance
         '''
-        data = self.__dict__.copy()
+        data = dict(self.__dict__)
         data['__class__'] = self.__class__.__name__
         data['created_at'] = self.created_at.isoformat()
         data['updated_at'] = self.updated_at.isoformat()
