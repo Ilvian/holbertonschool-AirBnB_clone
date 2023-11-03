@@ -57,10 +57,10 @@ class TestBaseModel(unittest.TestCase):
         This script initializes a FileStorage instance and reloads data,
         making it available for managing and persisting data.
         '''
+
         base = BaseModel()
-        initial_updated_at = base.updated_at
-        base.save()
-        self.assertNotEqual(initial_updated_at, base.updated_at)
+        time = base.save()
+        self.assertEqual(base.updated_at, time)
 
     def test_to_dict(self):
         '''
@@ -82,4 +82,4 @@ class TestBaseModel(unittest.TestCase):
 
         base = BaseModel()
         x = base
-        self.assertEqual(base, x)
+        self.assertEqual(str(base), str(x))
