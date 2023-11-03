@@ -81,5 +81,6 @@ class TestBaseModel(unittest.TestCase):
         '''
 
         base = BaseModel()
+        print(str(base))
         x = base
         self.assertEqual(str(base), str(x))
