@@ -67,7 +67,7 @@ class FileStorage:
                 cls_name, obj_id = key.split('.')
                 if cls_name in self.__class__.classes:
                     obj = self.__class__.classes[cls_name](**value)
-                    FileStorage.__objects[key] = obj
+                    self.new(obj)
             return True
         except FileNotFoundError:
             pass
