@@ -15,3 +15,10 @@ class User(BaseModel):
     password = ""
     first_name = ""
     last_name = ""
+
+    def __init__(self, *args, **kwargs):
+        '''
+        Initialize a Amenity instance,
+        that inherits initialization from BaseModel.
+        '''
+        super().__init__(*args, **kwargs)
