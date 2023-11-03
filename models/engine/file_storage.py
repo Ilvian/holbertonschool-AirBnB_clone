@@ -53,6 +53,7 @@ class FileStorage:
             data[key] = obj.to_dict()
         with open(FileStorage.__file_path, 'w') as file:
             json.dump(data, file)
+        return True
 
     def reload(self):
         '''
@@ -68,3 +69,4 @@ class FileStorage:
                     FileStorage.__objects[key] = obj
         except FileNotFoundError:
             pass
+            return True
