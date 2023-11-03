@@ -81,6 +81,6 @@ class TestBaseModel(unittest.TestCase):
         '''
 
         base = BaseModel()
-        print(str(base))
-        x = base
-        self.assertEqual(str(base), str(x))
+        expected_output = f"[{base.__class__.__name__}] ({base.id}) {base.__dict__}"
+        self.assertEqual(str(base), expected_output)
+
