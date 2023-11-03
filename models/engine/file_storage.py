@@ -43,6 +43,7 @@ class FileStorage:
         '''
         key = f"{obj.__class__.__name__}.{obj.id}"
         FileStorage.__objects[key] = obj
+        return True
 
     def save(self):
         '''
